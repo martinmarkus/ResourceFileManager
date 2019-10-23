@@ -44,6 +44,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DisplayableResourceFile.cs" />
+    <Compile Include="DisplayableResourceFileAttribute.cs" />
+    <Compile Include="DisplayableResourceFileFactory.cs" />
+    <Compile Include="Displayer.cs" />
+    <Compile Include="DisplayerAttribute.cs" />
+    <Compile Include="IDisplayableResourceFile.cs" />
+    <Compile Include="IDisplayer.cs" />
     <Compile Include="MyClass.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

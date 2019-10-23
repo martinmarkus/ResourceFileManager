@@ -1,5 +1,8 @@
 ﻿using FactorySupporter;
+using FactorySupporter.Attributes;
+using FactorySupporter.Delegates;
 using ResourceFileManager.Attributes;
+using ResourceFileManager.Converters;
 using ResourceFileManager.ResourceFileOperators;
 using ResourceFileManager.ResourceFiles;
 using System;
@@ -10,14 +13,14 @@ namespace ResourceFileManager.ResourceFileFactories
 {
     public class ResourceFileFactory
     {
-        private IImplementationFactory _implementationFactory;
+        protected IImplementationFactory _implementationFactory;
 
-        private string _extension;
+        protected string _extension;
 
         public ResourceFileFactory()
         {
-            Assembly executingAssembly = Assembly.GetExecutingAssembly();
-            _implementationFactory = new ImplementationFactory(executingAssembly);
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            _implementationFactory = new ImplementationFactory(assembly);
         }
 
         public IResourceFile Create<T>(string fullPath) where T : class
@@ -32,18 +35,28 @@ namespace ResourceFileManager.ResourceFileFactories
             resourceFile.ResourceFileOperator = resourceFileOperator;
             resourceFile.LoadFrom(fullPath);
 
-            resourceFile.Content = (T)resourceFile.Content;
-
             return resourceFile;
         }
 
-        private bool ResourceFileOpreatorIdentifierFunc(ResourceFileOperatorAttribute resourceFileAttribute)
+        protected TChild CreateChild<TChild, TAttribute>(string fullPath, IdentifierFunc<TAttribute> identifierFunc, Assembly executingAssembly)
+            where TChild : class, IResourceFile
+            where TAttribute : IdentifierAttribute
+        {
+            IResourceFile resourceFile = Create<TChild>(fullPath);
+            ResourceFileConverter resourceFileConverter = new ResourceFileConverter();
+
+            TChild result = resourceFileConverter.Convert<TChild, TAttribute>(resourceFile, identifierFunc, executingAssembly);
+
+            return result;
+        }
+
+        protected bool ResourceFileOpreatorIdentifierFunc(ResourceFileOperatorAttribute resourceFileAttribute)
         {
             string handledFormat = resourceFileAttribute.HandledFormat;
             return _extension.Equals(handledFormat, StringComparison.OrdinalIgnoreCase);
         }
 
-        private string GetExtension(string fullPath)
+        protected string GetExtension(string fullPath)
         {
             string extension = string.Empty;
 

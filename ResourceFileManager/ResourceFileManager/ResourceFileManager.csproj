@@ -31,7 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FactorySupporter">
+    <Reference Include="FactorySupporter, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>.\FactorySupporter.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -45,6 +46,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\ResourceFileOperatorAttribute.cs" />
+    <Compile Include="Converters\ResourceFileConverter.cs" />
+    <Compile Include="Facades\IResourceFileTypeIdentifier.cs" />
+    <Compile Include="Facades\ResourceFileTypeIdentifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceFileFactories\ResourceFileFactory.cs" />
     <Compile Include="ResourceFileOperators\ConcreteResourceFileOperators\XmlResourceFileOperator.cs" />

@@ -88,7 +88,7 @@ namespace ResourceFileManager.ResourceFiles
             return GetFullPathWithExceptionHandling();
         }
 
-        private void DefinePathRelatedFields(string fullPath)
+        protected void DefinePathRelatedFields(string fullPath)
         {
             Path = string.Empty;
             Name = string.Empty;
@@ -106,7 +106,7 @@ namespace ResourceFileManager.ResourceFiles
             }
         }
 
-        private string GetFullPathWithExceptionHandling()
+        protected string GetFullPathWithExceptionHandling()
         {
             string fullPath = string.Empty;
 
