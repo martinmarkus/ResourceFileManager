@@ -1,0 +1,125 @@
+﻿using System;
+using ResourceFileManager.ResourceFileOperators;
+
+namespace ResourceFileManager.ResourceFiles
+{
+    public class ResourceFile : IResourceFile
+    {
+        public string Path { get; set; }
+        public string Name { get; set; }
+        public string Extension { get; set; }
+
+        public object Content { get; set; }
+        public IResourceFileOperator ResourceFileOperator { get; set; }
+
+        public bool Reload()
+        {
+            string fullPath = GetFullPath();
+            DefinePathRelatedFields(fullPath);
+
+            try
+            {
+                Content = ResourceFileOperator?.Read<object>(fullPath);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return false;
+            }
+        }
+
+        public bool LoadFrom(string fullPath)
+        {
+            DefinePathRelatedFields(fullPath);
+
+            try
+            {
+                Content = ResourceFileOperator?.Read<object>(fullPath);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+                return false;
+            }
+        }
+
+        public bool Save()
+        {
+            bool isWritingSuccessful = false;
+            string fullPath = GetFullPath();
+
+            try
+            {
+                isWritingSuccessful = ResourceFileOperator.Write(fullPath, Content);
+            }
+            catch (Exception e) when (e is NullReferenceException)
+            {
+                Console.WriteLine(e.ToString());
+            }
+
+            return isWritingSuccessful;
+        }
+
+        public bool SaveAs(string fullPath)
+        {
+            bool isWritingSuccessful = false;
+
+            try
+            {
+                isWritingSuccessful = ResourceFileOperator.Write(fullPath, Content);
+            }
+            catch (Exception e) when (e is NullReferenceException)
+            {
+                Console.WriteLine(e.ToString());
+            }
+
+            return isWritingSuccessful;
+        }
+
+        public string GetFullPath()
+        {
+            return GetFullPathWithExceptionHandling() + Extension;
+        }
+
+        public string GetPathWithoutExtension()
+        {
+            return GetFullPathWithExceptionHandling();
+        }
+
+        private void DefinePathRelatedFields(string fullPath)
+        {
+            Path = string.Empty;
+            Name = string.Empty;
+            Extension = string.Empty;
+
+            try
+            {
+                Path = System.IO.Path.GetDirectoryName(fullPath);
+                Name = System.IO.Path.GetFileNameWithoutExtension(fullPath);
+                Extension = System.IO.Path.GetExtension(fullPath);
+            }
+            catch (Exception e) when (e is ArgumentException || e is ArgumentNullException)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+
+        private string GetFullPathWithExceptionHandling()
+        {
+            string fullPath = string.Empty;
+
+            try
+            {
+                fullPath = System.IO.Path.Combine(Path, Name) + Extension;
+            }
+            catch (Exception e) when (e is ArgumentException || e is ArgumentNullException)
+            {
+                Console.WriteLine(e.ToString());
+            }
+
+            return fullPath;
+        }
+    }
+}
