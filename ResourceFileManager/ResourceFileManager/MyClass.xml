@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<myClass>
-	<value1>value111</value1>
-	<value2>value222</value2>
-	<value3>value333</value3>
-</myClass>
+<MyClass>
+	<Value1>value111</Value1>
+	<Value2>value222</Value2>
+	<Value3>value333</Value3>
+</MyClass>

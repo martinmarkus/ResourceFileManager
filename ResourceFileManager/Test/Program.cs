@@ -1,6 +1,5 @@
-﻿using ResourceFileManager.ResourceFileFactories;
-using ResourceFileManager.ResourceFiles;
-using System.Reflection;
+﻿using ResourceFileManager;
+using ResourceFileManager.ResourceFileFactories;
 
 namespace Test
 {
@@ -14,10 +13,15 @@ namespace Test
 
             ResourceFileFactory resourceFileFactory = new ResourceFileFactory();
             IResourceFile resourceFile = resourceFileFactory.Create<MyClass>(fullPath);
-
+            myClass = (MyClass)resourceFile.Content;
 
             DisplayableResourceFileFactory displayableResourceFileFactory = new DisplayableResourceFileFactory();
             IDisplayableResourceFile displayableResourceFile = displayableResourceFileFactory.Create<MyClass>(fullPath);
+
+            resourceFile.Content = myClass;
+            resourceFile.Save();
+
+           
 
         }
     }

@@ -1,13 +1,9 @@
 ﻿using FactorySupporter.Attributes;
 using FactorySupporter.Delegates;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace ResourceFileManager.Facades
+namespace ResourceFileManager.Facades.ResourceFileTypeIdentifiers
 {
     public class ResourceFileTypeIdentifier : IResourceFileTypeIdentifier
     {

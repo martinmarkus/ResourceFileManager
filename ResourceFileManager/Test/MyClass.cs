@@ -1,6 +1,4 @@
-﻿using ResourceFileManager.Attributes;
-
-namespace Test
+﻿namespace Test
 {
     public class MyClass
     {

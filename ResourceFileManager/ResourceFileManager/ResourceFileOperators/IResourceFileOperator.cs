@@ -1,8 +1,10 @@
-﻿namespace ResourceFileManager.ResourceFileOperators
+﻿using System;
+
+namespace ResourceFileManager.ResourceFileOperators
 {
     public interface IResourceFileOperator
     {
-        T Read<T>(string fullPath) where T : class;
-        bool Write<T>(string fullPath, T value) where T : class;
+        object Read(string fullPath, Type type);
+        bool Write(string fullPath, object value);
     }
 }

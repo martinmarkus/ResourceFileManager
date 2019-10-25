@@ -3,7 +3,7 @@ using FactorySupporter.Delegates;
 using System;
 using System.Reflection;
 
-namespace ResourceFileManager.Facades
+namespace ResourceFileManager.Facades.ResourceFileTypeIdentifiers
 {
     public interface IResourceFileTypeIdentifier
     {

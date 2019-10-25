@@ -1,4 +1,4 @@
-﻿using ResourceFileManager.ResourceFiles;
+﻿using ResourceFileManager;
 
 namespace Test
 {

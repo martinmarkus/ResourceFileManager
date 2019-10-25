@@ -1,7 +1,7 @@
 ﻿using System;
 using ResourceFileManager.ResourceFileOperators;
 
-namespace ResourceFileManager.ResourceFiles
+namespace ResourceFileManager
 {
     public class ResourceFile : IResourceFile
     {
@@ -10,6 +10,8 @@ namespace ResourceFileManager.ResourceFiles
         public string Extension { get; set; }
 
         public object Content { get; set; }
+        public Type ContentType { get; set; }
+
         public IResourceFileOperator ResourceFileOperator { get; set; }
 
         public bool Reload()
@@ -19,7 +21,7 @@ namespace ResourceFileManager.ResourceFiles
 
             try
             {
-                Content = ResourceFileOperator?.Read<object>(fullPath);
+                Content = ResourceFileOperator?.Read(fullPath, ContentType);
                 return true;
             }
             catch (Exception e)
@@ -35,7 +37,7 @@ namespace ResourceFileManager.ResourceFiles
 
             try
             {
-                Content = ResourceFileOperator?.Read<object>(fullPath);
+                Content = ResourceFileOperator?.Read(fullPath, ContentType);
                 return true;
             }
             catch (Exception e)

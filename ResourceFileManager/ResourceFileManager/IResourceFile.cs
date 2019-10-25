@@ -1,6 +1,7 @@
 ﻿using ResourceFileManager.ResourceFileOperators;
+using System;
 
-namespace ResourceFileManager.ResourceFiles
+namespace ResourceFileManager
 {
     public interface IResourceFile
     {
@@ -18,6 +19,7 @@ namespace ResourceFileManager.ResourceFiles
         string GetPathWithoutExtension();
 
         object Content { get; set; }
+        Type ContentType { get; set; }
 
         IResourceFileOperator ResourceFileOperator { get; set; }
     }

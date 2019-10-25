@@ -1,19 +1,47 @@
 ﻿using ResourceFileManager.Attributes;
 using System;
+using System.IO;
+using System.Xml.Serialization;
 
 namespace ResourceFileManager.ResourceFileOperators.ConcreteResourceFileOperators
 {
     [ResourceFileOperator(".xml")]
     public class XmlResourceFileOperator : IResourceFileOperator
     {
-        public T Read<T>(string fullPath) where T : class
+       
+        public object Read(string fullPath, Type type)
         {
-            throw new NotImplementedException();
+            object result = default(object);
+
+            string attributeName = type.Name;
+
+            XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(attributeName);
+            XmlSerializer serializer = new XmlSerializer(type, xmlRootAttribute);
+
+            StreamReader reader = new StreamReader(fullPath);
+            result = serializer.Deserialize(reader);
+            reader.Close();
+
+            return result;
         }
 
-        public bool Write<T>(string fullPath, T value) where T : class
+        public bool Write(string fullPath, object value)
         {
-            throw new NotImplementedException();
+            XmlSerializer serializer = new XmlSerializer(typeof(object));
+
+            try
+            {
+                using (FileStream fs = new FileStream(@fullPath, FileMode.Create))
+                {
+                    serializer.Serialize(fs, value);
+                }
+                return true;
+            }
+            catch (Exception e) when (e is InvalidOperationException || e is IOException)
+            {
+                Console.WriteLine(e.ToString());
+                return false;
+            }
         }
     }
 }

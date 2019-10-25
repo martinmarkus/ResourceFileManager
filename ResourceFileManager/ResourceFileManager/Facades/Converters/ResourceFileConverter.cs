@@ -1,18 +1,17 @@
 ﻿using FactorySupporter.Attributes;
 using FactorySupporter.Delegates;
-using FactorySupporter.Facades;
-using ResourceFileManager.Facades;
-using ResourceFileManager.ResourceFiles;
 using System;
 using System.Reflection;
+using ResourceFileManager.Facades.ResourceFileTypeIdentifiers;
 
-namespace ResourceFileManager.Converters
+namespace ResourceFileManager.Facades.Converters
 {
     internal class ResourceFileConverter
     {
-        internal TChild Convert<TChild, TAttribute>(IResourceFile parentResourceFile, IdentifierFunc<TAttribute> identifierFunc, Assembly executingAssembly)
-            where TChild : class
-            where TAttribute : IdentifierAttribute
+        internal TChild Convert<TChild, TAttribute>(IResourceFile parentResourceFile,
+            IdentifierFunc<TAttribute> identifierFunc, Assembly executingAssembly)
+                where TChild : class
+                where TAttribute : IdentifierAttribute
         {
             IResourceFileTypeIdentifier resourceFileTypeIdentifier = new ResourceFileTypeIdentifier();
 

@@ -2,12 +2,11 @@
 using FactorySupporter.Attributes;
 using FactorySupporter.Delegates;
 using ResourceFileManager.Attributes;
-using ResourceFileManager.Converters;
 using ResourceFileManager.ResourceFileOperators;
-using ResourceFileManager.ResourceFiles;
 using System;
 using System.IO;
 using System.Reflection;
+using ResourceFileManager.Facades.Converters;
 
 namespace ResourceFileManager.ResourceFileFactories
 {
@@ -23,7 +22,8 @@ namespace ResourceFileManager.ResourceFileFactories
             _implementationFactory = new ImplementationFactory(assembly);
         }
 
-        public IResourceFile Create<T>(string fullPath) where T : class
+        public IResourceFile Create<TChild>(string fullPath)
+            where TChild : class
         {
             _extension = GetExtension(fullPath);
 
@@ -33,13 +33,14 @@ namespace ResourceFileManager.ResourceFileFactories
                 .Create<IResourceFileOperator, ResourceFileOperatorAttribute>(ResourceFileOpreatorIdentifierFunc);
 
             resourceFile.ResourceFileOperator = resourceFileOperator;
+            resourceFile.ContentType = typeof(TChild);
             resourceFile.LoadFrom(fullPath);
 
             return resourceFile;
         }
 
         protected TChild CreateChild<TChild, TAttribute>(string fullPath, IdentifierFunc<TAttribute> identifierFunc, Assembly executingAssembly)
-            where TChild : class, IResourceFile
+            where TChild : class
             where TAttribute : IdentifierAttribute
         {
             IResourceFile resourceFile = Create<TChild>(fullPath);

@@ -46,15 +46,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\ResourceFileOperatorAttribute.cs" />
-    <Compile Include="Converters\ResourceFileConverter.cs" />
-    <Compile Include="Facades\IResourceFileTypeIdentifier.cs" />
-    <Compile Include="Facades\ResourceFileTypeIdentifier.cs" />
+    <Compile Include="Facades\Converters\ResourceFileConverter.cs" />
+    <Compile Include="Facades\ResourceFileTypeIdentifier\IResourceFileTypeIdentifier.cs" />
+    <Compile Include="Facades\ResourceFileTypeIdentifier\ResourceFileTypeIdentifier.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResourceFileFactories\ResourceFileFactory.cs" />
     <Compile Include="ResourceFileOperators\ConcreteResourceFileOperators\XmlResourceFileOperator.cs" />
     <Compile Include="ResourceFileOperators\IResourceFileOperator.cs" />
-    <Compile Include="ResourceFiles\IResourceFile.cs" />
-    <Compile Include="ResourceFiles\ResourceFile.cs" />
+    <Compile Include="IResourceFile.cs" />
+    <Compile Include="ResourceFile.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
