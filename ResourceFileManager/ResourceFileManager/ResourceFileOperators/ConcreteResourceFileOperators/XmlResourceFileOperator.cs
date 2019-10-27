@@ -8,7 +8,6 @@ namespace ResourceFileManager.ResourceFileOperators.ConcreteResourceFileOperator
     [ResourceFileOperator(".xml")]
     public class XmlResourceFileOperator : IResourceFileOperator
     {
-       
         public object Read(string fullPath, Type type)
         {
             object result = default(object);

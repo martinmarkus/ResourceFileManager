@@ -16,6 +16,7 @@ namespace ResourceFileManager.Facades.Converters
             IResourceFileTypeIdentifier resourceFileTypeIdentifier = new ResourceFileTypeIdentifier();
 
             Type type = resourceFileTypeIdentifier.GetInstantiationType(identifierFunc, executingAssembly);
+            if (type == null) return default(TChildResourceFile);
 
             TChildResourceFile childResourceFile = (TChildResourceFile)Activator.CreateInstance(type);
 
