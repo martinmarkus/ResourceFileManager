@@ -49,6 +49,7 @@
     <Compile Include="DisplayableResourceFileFactory.cs" />
     <Compile Include="Displayer.cs" />
     <Compile Include="DisplayerAttribute.cs" />
+    <Compile Include="Foo.cs" />
     <Compile Include="IDisplayableResourceFile.cs" />
     <Compile Include="IDisplayer.cs" />
     <Compile Include="MyClass.cs" />

@@ -1,5 +1,4 @@
 ﻿using ResourceFileManager;
-using ResourceFileManager.ResourceFileFactories;
 
 namespace Test
 {
@@ -7,19 +6,18 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            MyClass myClass = new MyClass("one", "two", "three");
+            Foo foo = new Foo(10, 30.2f, 23, true);
+            MyClass myClass = new MyClass("one", "two", "three", foo);
 
             string fullPath = @"D:\Repos\ResourceFileManager\ResourceFileManager\ResourceFileManager\MyClass.xml";
-
-            ResourceFileFactory resourceFileFactory = new ResourceFileFactory();
-            IResourceFile resourceFile = resourceFileFactory.Create<MyClass>(fullPath);
-            myClass = (MyClass)resourceFile.Content;
 
             DisplayableResourceFileFactory displayableResourceFileFactory = new DisplayableResourceFileFactory();
             IDisplayableResourceFile displayableResourceFile = displayableResourceFileFactory.Create<MyClass>(fullPath);
 
-            resourceFile.Content = myClass;
-            resourceFile.Save();
+            IResourceFile resourceFile = new ResourceFile();
+
+            displayableResourceFile.Content = myClass;
+            displayableResourceFile.Save();
 
            
 

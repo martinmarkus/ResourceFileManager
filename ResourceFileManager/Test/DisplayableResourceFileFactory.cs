@@ -11,7 +11,7 @@ namespace Test
             where TChild : class
         {
             Assembly executingAssembly = Assembly.GetExecutingAssembly();
-            IDisplayableResourceFile displayableResourceFile = CreateChild<IDisplayableResourceFile, DisplayableResourceFileAttribute>(fullPath, ResourceFileIdentifierFunc, executingAssembly);
+            IDisplayableResourceFile displayableResourceFile = CreateChild<TChild, IDisplayableResourceFile, DisplayableResourceFileAttribute>(fullPath, ResourceFileIdentifierFunc);
 
             IDisplayer displayer = _implementationFactory.Create<IDisplayer, DisplayerAttribute>(executingAssembly, DisplayerIdentifierFunc);
             displayableResourceFile.Displayer = displayer;

@@ -7,7 +7,6 @@ using System;
 using System.IO;
 using System.Reflection;
 using ResourceFileManager.Facades.Converters;
-
 namespace ResourceFileManager.ResourceFileFactories
 {
     public class ResourceFileFactory
@@ -16,11 +15,31 @@ namespace ResourceFileManager.ResourceFileFactories
 
         protected string _extension;
 
+        public Assembly ExecutingAssembly
+        {
+            get
+            {
+                return _implementationFactory?.ExecutingAssembly;
+            }
+            set
+            {
+                _implementationFactory.ExecutingAssembly = value;
+            }
+        }
+
         public ResourceFileFactory()
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
             _implementationFactory = new ImplementationFactory(assembly);
+            ExecutingAssembly = assembly;
         }
+
+        public ResourceFileFactory(Assembly assembly)
+        {
+            _implementationFactory = new ImplementationFactory(assembly);
+            ExecutingAssembly = assembly;
+        }
+
 
         public IResourceFile Create<TChild>(string fullPath)
             where TChild : class
@@ -39,14 +58,28 @@ namespace ResourceFileManager.ResourceFileFactories
             return resourceFile;
         }
 
-        protected TChild CreateChild<TChild, TAttribute>(string fullPath, IdentifierFunc<TAttribute> identifierFunc, Assembly executingAssembly)
-            where TChild : class
+        protected TChildResourceFile CreateChild<TContentType, TChildResourceFile, TAttribute>(string fullPath, IdentifierFunc<TAttribute> identifierFunc)
+            where TContentType : class
+            where TChildResourceFile : IResourceFile
             where TAttribute : IdentifierAttribute
         {
-            IResourceFile resourceFile = Create<TChild>(fullPath);
+            IResourceFile resourceFile = Create<TContentType>(fullPath);
             ResourceFileConverter resourceFileConverter = new ResourceFileConverter();
 
-            TChild result = resourceFileConverter.Convert<TChild, TAttribute>(resourceFile, identifierFunc, executingAssembly);
+            TChildResourceFile result = resourceFileConverter.Convert<TChildResourceFile, TAttribute>(resourceFile, identifierFunc, ExecutingAssembly);
+
+            return result;
+        }
+
+        protected TChildResourceFile CreateChild<TContentType, TChildResourceFile, TAttribute>(string fullPath, IdentifierFunc<TAttribute> identifierFunc, Assembly executingAssembly)
+            where TContentType : class
+            where TChildResourceFile : IResourceFile
+            where TAttribute : IdentifierAttribute
+        {
+            IResourceFile resourceFile = Create<TContentType>(fullPath);
+            ResourceFileConverter resourceFileConverter = new ResourceFileConverter();
+
+            TChildResourceFile result = resourceFileConverter.Convert<TChildResourceFile, TAttribute>(resourceFile, identifierFunc, executingAssembly);
 
             return result;
         }
