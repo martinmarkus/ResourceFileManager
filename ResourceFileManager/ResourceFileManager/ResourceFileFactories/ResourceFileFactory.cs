@@ -43,8 +43,8 @@ namespace ResourceFileManager.ResourceFileFactories
         }
 
 
-        public IResourceFile Create<TChild>(string fullPath)
-            where TChild : class
+        public IResourceFile Create<TContentType>(string fullPath)
+            where TContentType : class
         {
             _extension = GetExtension(fullPath);
 
@@ -54,7 +54,7 @@ namespace ResourceFileManager.ResourceFileFactories
                 .Create<IResourceFileOperator, ResourceFileOperatorAttribute>(OwnExecutingAssembly, ResourceFileOpreatorIdentifierFunc);
 
             resourceFile.ResourceFileOperator = resourceFileOperator;
-            resourceFile.ContentType = typeof(TChild);
+            resourceFile.ContentType = typeof(TContentType);
 
             return resourceFile;
         }
