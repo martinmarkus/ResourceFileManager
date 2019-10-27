@@ -14,24 +14,36 @@ namespace ResourceFileManager.ResourceFileOperators.ConcreteResourceFileOperator
             object result = default(object);
 
             string attributeName = type.Name;
-
             XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(attributeName);
             XmlSerializer serializer = new XmlSerializer(type, xmlRootAttribute);
 
-            StreamReader reader = new StreamReader(fullPath);
-            result = serializer.Deserialize(reader);
-            reader.Close();
-
+            StreamReader reader = null;
+            try
+            {
+                reader = new StreamReader(fullPath);
+                result = serializer.Deserialize(reader);
+                reader.Close();
+            }
+            catch (Exception e) when (e is ArgumentException || e is ArgumentNullException
+                || e is IOException || e is FileNotFoundException 
+                || e is DirectoryNotFoundException || e is InvalidOperationException)
+            {
+                throw e;
+            }
+            finally
+            {
+                if (reader != null) reader.Close();
+            }
             return result;
         }
 
-        public bool Write(string fullPath, object value)
+        public bool Write(string fullPath, object value, Type type)
         {
-            XmlSerializer serializer = new XmlSerializer(typeof(object));
+            XmlSerializer serializer = new XmlSerializer(type);
 
             try
             {
-                using (FileStream fs = new FileStream(@fullPath, FileMode.Create))
+                using (StreamWriter fs = new StreamWriter(@fullPath))
                 {
                     serializer.Serialize(fs, value);
                 }

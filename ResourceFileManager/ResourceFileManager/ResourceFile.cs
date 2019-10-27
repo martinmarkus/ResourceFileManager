@@ -14,7 +14,7 @@ namespace ResourceFileManager
 
         public IResourceFileOperator ResourceFileOperator { get; set; }
 
-        public bool Reload()
+        public bool Load()
         {
             string fullPath = GetFullPath();
             DefinePathRelatedFields(fullPath);
@@ -54,7 +54,7 @@ namespace ResourceFileManager
 
             try
             {
-                isWritingSuccessful = ResourceFileOperator.Write(fullPath, Content);
+                isWritingSuccessful = ResourceFileOperator.Write(fullPath, Content, ContentType);
             }
             catch (Exception e) when (e is NullReferenceException)
             {
@@ -70,7 +70,7 @@ namespace ResourceFileManager
 
             try
             {
-                isWritingSuccessful = ResourceFileOperator.Write(fullPath, Content);
+                isWritingSuccessful = ResourceFileOperator.Write(fullPath, Content, ContentType);
             }
             catch (Exception e) when (e is NullReferenceException)
             {
@@ -82,7 +82,7 @@ namespace ResourceFileManager
 
         public string GetFullPath()
         {
-            return GetFullPathWithExceptionHandling() + Extension;
+            return GetFullPathWithExceptionHandling();
         }
 
         public string GetPathWithoutExtension()

@@ -12,7 +12,7 @@ namespace ResourceFileManager
         bool Save();
         bool SaveAs(string fullPath);
 
-        bool Reload();
+        bool Load();
         bool LoadFrom(string fullPath);
 
         string GetFullPath();

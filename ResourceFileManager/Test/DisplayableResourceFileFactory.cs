@@ -7,6 +7,10 @@ namespace Test
 {
     public class DisplayableResourceFileFactory : ResourceFileFactory
     {
+        public DisplayableResourceFileFactory(Assembly assembly) : base(assembly)
+        {
+        }
+
         public new IDisplayableResourceFile Create<TChild>(string fullPath)
             where TChild : class
         {

@@ -15,6 +15,8 @@ namespace ResourceFileManager.ResourceFileFactories
 
         protected string _extension;
 
+        private Assembly OwnExecutingAssembly { get; } = Assembly.GetExecutingAssembly();
+
         public Assembly ExecutingAssembly
         {
             get
@@ -49,11 +51,10 @@ namespace ResourceFileManager.ResourceFileFactories
             IResourceFile resourceFile = new ResourceFile();
 
             IResourceFileOperator resourceFileOperator = _implementationFactory
-                .Create<IResourceFileOperator, ResourceFileOperatorAttribute>(ResourceFileOpreatorIdentifierFunc);
+                .Create<IResourceFileOperator, ResourceFileOperatorAttribute>(OwnExecutingAssembly, ResourceFileOpreatorIdentifierFunc);
 
             resourceFile.ResourceFileOperator = resourceFileOperator;
             resourceFile.ContentType = typeof(TChild);
-            resourceFile.LoadFrom(fullPath);
 
             return resourceFile;
         }
@@ -67,19 +68,6 @@ namespace ResourceFileManager.ResourceFileFactories
             ResourceFileConverter resourceFileConverter = new ResourceFileConverter();
 
             TChildResourceFile result = resourceFileConverter.Convert<TChildResourceFile, TAttribute>(resourceFile, identifierFunc, ExecutingAssembly);
-
-            return result;
-        }
-
-        protected TChildResourceFile CreateChild<TContentType, TChildResourceFile, TAttribute>(string fullPath, IdentifierFunc<TAttribute> identifierFunc, Assembly executingAssembly)
-            where TContentType : class
-            where TChildResourceFile : IResourceFile
-            where TAttribute : IdentifierAttribute
-        {
-            IResourceFile resourceFile = Create<TContentType>(fullPath);
-            ResourceFileConverter resourceFileConverter = new ResourceFileConverter();
-
-            TChildResourceFile result = resourceFileConverter.Convert<TChildResourceFile, TAttribute>(resourceFile, identifierFunc, executingAssembly);
 
             return result;
         }

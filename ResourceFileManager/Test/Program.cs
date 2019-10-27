@@ -1,4 +1,6 @@
 ﻿using ResourceFileManager;
+using ResourceFileManager.ResourceFileFactories;
+using System.Reflection;
 
 namespace Test
 {
@@ -11,15 +13,17 @@ namespace Test
 
             string fullPath = @"D:\Repos\ResourceFileManager\ResourceFileManager\ResourceFileManager\MyClass.xml";
 
-            DisplayableResourceFileFactory displayableResourceFileFactory = new DisplayableResourceFileFactory();
-            IDisplayableResourceFile displayableResourceFile = displayableResourceFileFactory.Create<MyClass>(fullPath);
+            ResourceFileFactory resourceFileFactory = new ResourceFileFactory(Assembly.GetExecutingAssembly());
 
-            IResourceFile resourceFile = new ResourceFile();
+            IResourceFile resourceFile = resourceFileFactory.Create<MyClass>(fullPath);
+
+            DisplayableResourceFileFactory displayableResourceFileFactory = new DisplayableResourceFileFactory(Assembly.GetExecutingAssembly());
+            IDisplayableResourceFile displayableResourceFile = displayableResourceFileFactory.Create<MyClass>(fullPath);
 
             displayableResourceFile.Content = myClass;
             displayableResourceFile.Save();
+            
 
-           
 
         }
     }

@@ -1,5 +1,8 @@
-﻿namespace Test
+﻿using System;
+
+namespace Test
 {
+    [Serializable]
     public class MyClass
     {
         public string Value1 { get; set; }

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MyClass>
+	<Value1>value111</Value1>
+	<Value2>value222</Value2>
+	<Value3>value333</Value3>
+	<Foo>
+		<Integer>10</Integer>
+		<Double>100</Double>
+		<Float>12.1</Float>
+		<Bool>true</Bool>
+	</Foo>
+</MyClass>
