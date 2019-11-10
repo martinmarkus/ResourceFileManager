@@ -17,14 +17,6 @@ namespace Test
 
             IResourceFile resourceFile = resourceFileFactory.Create<MyClass>(fullPath);
 
-            DisplayableResourceFileFactory displayableResourceFileFactory = new DisplayableResourceFileFactory(Assembly.GetExecutingAssembly());
-            IDisplayableResourceFile displayableResourceFile = displayableResourceFileFactory.Create<MyClass>(fullPath);
-
-            displayableResourceFile.Content = myClass;
-            displayableResourceFile.Save();
-            
-
-
         }
     }
 }

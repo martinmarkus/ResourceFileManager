@@ -14,6 +14,11 @@ namespace ResourceFileManager
 
         public IResourceFileOperator ResourceFileOperator { get; set; }
 
+        public ResourceFile(string fullPath)
+        {
+            DefinePathRelatedFields(fullPath);
+        }
+
         public bool Load()
         {
             string fullPath = GetFullPath();
@@ -66,6 +71,7 @@ namespace ResourceFileManager
 
         public bool SaveAs(string fullPath)
         {
+            DefinePathRelatedFields(fullPath);
             bool isWritingSuccessful = false;
 
             try

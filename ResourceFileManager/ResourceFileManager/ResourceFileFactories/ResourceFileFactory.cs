@@ -15,7 +15,7 @@ namespace ResourceFileManager.ResourceFileFactories
 
         protected string _extension;
 
-        private Assembly OwnExecutingAssembly { get; } = Assembly.GetExecutingAssembly();
+        private Assembly OwnExecutingAssembly { get; } = Assembly.GetAssembly(typeof(IResourceFileOperator));
 
         public Assembly ExecutingAssembly
         {
@@ -48,7 +48,7 @@ namespace ResourceFileManager.ResourceFileFactories
         {
             _extension = GetExtension(fullPath);
 
-            IResourceFile resourceFile = new ResourceFile();
+            IResourceFile resourceFile = new ResourceFile(fullPath);
 
             IResourceFileOperator resourceFileOperator = _implementationFactory
                 .Create<IResourceFileOperator, ResourceFileOperatorAttribute>(OwnExecutingAssembly, ResourceFileOpreatorIdentifierFunc);

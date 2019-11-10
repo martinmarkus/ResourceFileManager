@@ -3,6 +3,7 @@ using FactorySupporter.Delegates;
 using System;
 using System.Reflection;
 using ResourceFileManager.Facades.ResourceFileTypeIdentifiers;
+using System.Runtime.InteropServices;
 
 namespace ResourceFileManager.Facades.Converters
 {
@@ -18,12 +19,22 @@ namespace ResourceFileManager.Facades.Converters
             Type type = resourceFileTypeIdentifier.GetInstantiationType(identifierFunc, executingAssembly);
             if (type == null) return default(TChildResourceFile);
 
-            TChildResourceFile childResourceFile = (TChildResourceFile)Activator.CreateInstance(type);
-
-            foreach (PropertyInfo property in parentResourceFile.GetType().GetProperties())
+            TChildResourceFile childResourceFile = default(TChildResourceFile);
+            try
             {
-                PropertyInfo childProp = childResourceFile.GetType().GetProperty(property.Name);
-                childProp.SetValue(childResourceFile, property.GetValue(parentResourceFile, null), null);
+                childResourceFile = (TChildResourceFile)Activator.CreateInstance(type);
+
+                foreach (PropertyInfo property in parentResourceFile.GetType().GetProperties())
+                {
+                    PropertyInfo childProp = childResourceFile.GetType().GetProperty(property.Name);
+                    childProp.SetValue(childResourceFile, property.GetValue(parentResourceFile, null), null);
+                }
+            }
+            catch(Exception e) when (e is ArgumentException || e is NotSupportedException || e is TargetInvocationException
+                || e is MethodAccessException || e is MemberAccessException || e is InvalidComObjectException
+                || e is MissingMethodException || e is COMException || e is TypeLoadException)
+            {
+                Console.WriteLine(e.ToString());
             }
 
             return childResourceFile;
