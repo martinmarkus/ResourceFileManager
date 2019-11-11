@@ -8,6 +8,7 @@ namespace ResourceFileManager
         string Path { get; set; }
         string Name { get; set; }
         string Extension { get; set; }
+        string FullPath { get; set; }
 
         bool Save();
         bool SaveAs(string fullPath);

@@ -9,6 +9,20 @@ namespace ResourceFileManager
         public string Name { get; set; }
         public string Extension { get; set; }
 
+        private string _fullPath;
+        public string FullPath
+        {
+            get
+            {
+                return _fullPath;
+            }
+            set
+            {
+                _fullPath = value;
+                DefinePathRelatedFields(value);
+            }
+        }
+
         public object Content { get; set; }
         public Type ContentType { get; set; }
 
@@ -16,17 +30,19 @@ namespace ResourceFileManager
 
         public ResourceFile(string fullPath)
         {
+            FullPath = fullPath;
             DefinePathRelatedFields(fullPath);
+        }
+
+        public ResourceFile()
+        {
         }
 
         public bool Load()
         {
-            string fullPath = GetFullPath();
-            DefinePathRelatedFields(fullPath);
-
             try
             {
-                Content = ResourceFileOperator?.Read(fullPath, ContentType);
+                Content = ResourceFileOperator?.Read(FullPath, ContentType);
                 return true;
             }
             catch (Exception e)
@@ -55,11 +71,10 @@ namespace ResourceFileManager
         public bool Save()
         {
             bool isWritingSuccessful = false;
-            string fullPath = GetFullPath();
 
             try
             {
-                isWritingSuccessful = ResourceFileOperator.Write(fullPath, Content, ContentType);
+                isWritingSuccessful = ResourceFileOperator.Write(FullPath, Content, ContentType);
             }
             catch (Exception e) when (e is NullReferenceException)
             {
