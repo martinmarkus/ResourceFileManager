@@ -38,6 +38,13 @@ namespace ResourceFileManager.ResourceFileOperators.ConcreteResourceFileOperator
 
         public bool Write(string fullPath, object value, Type type)
         {
+            bool isPathValid = ValidateDirectory(fullPath);
+
+            if (!isPathValid)
+            {
+                return false;
+            }
+
             XmlSerializer serializer = new XmlSerializer(type);
 
             try
@@ -53,6 +60,26 @@ namespace ResourceFileManager.ResourceFileOperators.ConcreteResourceFileOperator
                 Console.WriteLine(e.ToString());
                 return false;
             }
+        }
+
+        private bool ValidateDirectory(string fullPath)
+        {
+            try
+            {
+                string dir = Path.GetDirectoryName(fullPath);
+                if (!Directory.Exists(dir))
+                {
+                    Directory.CreateDirectory(dir);
+                }
+            }
+            catch (Exception e) when (e is ArgumentException || e is ArgumentNullException
+                || e is IOException || e is FileNotFoundException ||e is PathTooLongException
+                || e is DirectoryNotFoundException || e is InvalidOperationException
+                ||e is UnauthorizedAccessException || e is NotSupportedException)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
