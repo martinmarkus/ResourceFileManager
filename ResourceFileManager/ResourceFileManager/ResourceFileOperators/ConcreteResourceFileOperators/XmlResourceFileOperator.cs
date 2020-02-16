@@ -1,6 +1,7 @@
 ﻿using ResourceFileManager.Attributes;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Xml.Serialization;
 
 namespace ResourceFileManager.ResourceFileOperators.ConcreteResourceFileOperators
@@ -12,7 +13,19 @@ namespace ResourceFileManager.ResourceFileOperators.ConcreteResourceFileOperator
         {
             object result = default(object);
 
-            string attributeName = type.Name;
+            string attributeName = null;
+            TypeAttributes typeAttributes = type.Attributes;
+            var attr = type.GetCustomAttribute<XmlRootAttribute>(false);
+           
+            if (attr != null)
+            {
+                attributeName = attr.ElementName;
+            }
+            else
+            {
+                attributeName = type.Name;
+            }
+
             XmlRootAttribute xmlRootAttribute = new XmlRootAttribute(attributeName);
             XmlSerializer serializer = new XmlSerializer(type, xmlRootAttribute);
 
